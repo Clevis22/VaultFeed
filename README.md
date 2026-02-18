@@ -130,6 +130,34 @@ server {
 }
 ```
 
+## Updating After Changes
+
+If you've pushed changes to the GitHub repo and need to update a running instance:
+
+```bash
+# Navigate to the project directory
+cd /path/to/vaultfeed
+
+# Pull the latest changes
+git pull origin main
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Install any new/updated dependencies
+pip install -r requirements.txt
+
+# Restart the app
+# If running directly:
+# Stop the current process (Ctrl+C) and re-run:
+python app.py
+
+# If running with systemd + Gunicorn:
+sudo systemctl restart vaultfeed
+```
+
+> **Tip:** Static file changes (CSS/JS/HTML) take effect on the next page reload. Python changes require a server restart.
+
 ## Built With
 
 - [Flask](https://flask.palletsprojects.com/) — Python web framework

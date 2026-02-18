@@ -739,9 +739,11 @@
       // Build rich article HTML
       let html = "";
 
-      // Hero image
-      if (data.top_image && !article.thumbnail) {
-        html += `<img src="${escapeHtml(data.top_image)}" class="nr-reading-hero" alt="" />`;
+      // Hero image – prefer the RSS thumbnail already shown in the preview;
+      // fall back to the image extracted by the backend.
+      const heroUrl = article.thumbnail || data.top_image;
+      if (heroUrl) {
+        html += `<img src="${escapeHtml(heroUrl)}" class="nr-reading-hero" alt="" />`;
       }
 
       // Authors
@@ -977,21 +979,31 @@
   }
 
   // ── Theme toggle ──
+  const THEME_ORDER = ["dark", "light", "hacker", "retro", "nord", "eink", "paper"];
+
   function updateThemeIcon(theme) {
     const icon = $("nrThemeIcon");
     if (!icon) return;
-    if (theme === "light") {
-      // Sun icon
-      icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-    } else {
-      // Moon icon
-      icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-    }
+    const icons = {
+      light:     '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
+      dark:      '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+      hacker:    '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><text x="7" y="13" font-size="7" fill="currentColor" stroke="none" font-family="monospace">&gt;_</text>',
+      retro:     '<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><circle cx="12" cy="10" r="3" fill="none"/>',
+      nord:      '<path d="M12 2L2 19h20L12 2z" fill="none"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="16" r="0.5"/>',
+      eink:      '<rect x="4" y="2" width="16" height="20" rx="2" fill="none"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="13" y2="14"/>',
+      paper:     '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="none"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="none"/>',
+    };
+    icon.innerHTML = icons[theme] || icons.dark;
+
+    // Sync the settings dropdown if open
+    const sel = $("nrThemeSelect");
+    if (sel && sel.value !== theme) sel.value = theme;
   }
 
   function toggleTheme() {
     const current = document.documentElement.getAttribute("data-theme") || "dark";
-    const next = current === "dark" ? "light" : "dark";
+    const idx = THEME_ORDER.indexOf(current);
+    const next = THEME_ORDER[(idx + 1) % THEME_ORDER.length];
     document.documentElement.setAttribute("data-theme", next);
     save("theme", next);
     updateThemeIcon(next);

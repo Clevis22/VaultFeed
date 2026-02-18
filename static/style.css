@@ -182,3 +182,136 @@ body {
     height: 100%;
   }
 }
+
+/* ── Hacker (green-on-black terminal) ── */
+[data-theme="hacker"] {
+  color-scheme: dark;
+  --bg: #0a0a0a;
+  --bg-elevated: rgba(10, 18, 10, 0.96);
+  --bg-elevated-soft: rgba(14, 24, 14, 0.98);
+  --border-subtle: rgba(0, 255, 65, 0.1);
+  --text-main: #00ff41;
+  --text-muted: #00aa2a;
+  --accent: #00ff41;
+  --accent-soft: rgba(0, 255, 65, 0.12);
+  --shadow-soft: 0 0 12px rgba(0, 255, 65, 0.06);
+  --scrollbar-thumb: rgba(0, 255, 65, 0.12);
+  --scrollbar-thumb-hover: rgba(0, 255, 65, 0.25);
+  --card-hover: rgba(0, 255, 65, 0.04);
+  --card-active: rgba(0, 255, 65, 0.08);
+  --input-bg: rgba(0, 255, 65, 0.05);
+  --delete-color: #ff3333;
+  --delete-bg: rgba(255, 51, 51, 0.12);
+}
+
+[data-theme="hacker"] body,
+[data-theme="hacker"] input,
+[data-theme="hacker"] select,
+[data-theme="hacker"] textarea,
+[data-theme="hacker"] button {
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", "Menlo", "Consolas", monospace !important;
+}
+
+/* ── Retro (amber CRT) ── */
+[data-theme="retro"] {
+  color-scheme: dark;
+  --bg: #1a1000;
+  --bg-elevated: rgba(30, 22, 4, 0.96);
+  --bg-elevated-soft: rgba(38, 28, 6, 0.98);
+  --border-subtle: rgba(255, 176, 0, 0.12);
+  --text-main: #ffb000;
+  --text-muted: #b87a00;
+  --accent: #ff8c00;
+  --accent-soft: rgba(255, 140, 0, 0.14);
+  --shadow-soft: 0 0 12px rgba(255, 176, 0, 0.06);
+  --scrollbar-thumb: rgba(255, 176, 0, 0.12);
+  --scrollbar-thumb-hover: rgba(255, 176, 0, 0.25);
+  --card-hover: rgba(255, 176, 0, 0.04);
+  --card-active: rgba(255, 176, 0, 0.08);
+  --input-bg: rgba(255, 176, 0, 0.05);
+  --delete-color: #ff5533;
+  --delete-bg: rgba(255, 85, 51, 0.12);
+}
+
+[data-theme="retro"] body,
+[data-theme="retro"] input,
+[data-theme="retro"] select,
+[data-theme="retro"] textarea,
+[data-theme="retro"] button {
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", "Menlo", "Consolas", monospace !important;
+}
+
+/* ── Nord ── */
+[data-theme="nord"] {
+  color-scheme: dark;
+  --bg: #2e3440;
+  --bg-elevated: rgba(59, 66, 82, 0.96);
+  --bg-elevated-soft: rgba(67, 76, 94, 0.98);
+  --border-subtle: rgba(216, 222, 233, 0.08);
+  --text-main: #eceff4;
+  --text-muted: #81a1c1;
+  --accent: #88c0d0;
+  --accent-soft: rgba(136, 192, 208, 0.14);
+  --shadow-soft: none;
+  --scrollbar-thumb: rgba(216, 222, 233, 0.1);
+  --scrollbar-thumb-hover: rgba(216, 222, 233, 0.2);
+  --card-hover: rgba(216, 222, 233, 0.04);
+  --card-active: rgba(216, 222, 233, 0.07);
+  --input-bg: rgba(216, 222, 233, 0.05);
+  --delete-color: #bf616a;
+  --delete-bg: rgba(191, 97, 106, 0.12);
+}
+
+/* ── E-Ink (high contrast, minimal) ── */
+[data-theme="eink"] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-elevated: rgba(250, 250, 250, 0.96);
+  --bg-elevated-soft: rgba(245, 245, 245, 0.98);
+  --border-subtle: rgba(0, 0, 0, 0.15);
+  --text-main: #000000;
+  --text-muted: #555555;
+  --accent: #000000;
+  --accent-soft: rgba(0, 0, 0, 0.08);
+  --shadow-soft: none;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.35);
+  --card-hover: rgba(0, 0, 0, 0.03);
+  --card-active: rgba(0, 0, 0, 0.07);
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --delete-color: #333333;
+  --delete-bg: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="eink"] body,
+[data-theme="eink"] .nr-reading-text,
+[data-theme="eink"] .nr-reading-text p {
+  font-family: "Georgia", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif !important;
+}
+
+/* ── Paper (warm sepia / newspaper) ── */
+[data-theme="paper"] {
+  color-scheme: light;
+  --bg: #f4efe6;
+  --bg-elevated: rgba(252, 248, 240, 0.96);
+  --bg-elevated-soft: rgba(248, 243, 233, 0.98);
+  --border-subtle: rgba(120, 100, 70, 0.12);
+  --text-main: #3b3228;
+  --text-muted: #8a7e6b;
+  --accent: #a0522d;
+  --accent-soft: rgba(160, 82, 45, 0.12);
+  --shadow-soft: 0 1px 3px rgba(60, 50, 30, 0.08);
+  --scrollbar-thumb: rgba(120, 100, 70, 0.15);
+  --scrollbar-thumb-hover: rgba(120, 100, 70, 0.28);
+  --card-hover: rgba(120, 100, 70, 0.04);
+  --card-active: rgba(120, 100, 70, 0.08);
+  --input-bg: rgba(120, 100, 70, 0.05);
+  --delete-color: #c0392b;
+  --delete-bg: rgba(192, 57, 43, 0.1);
+}
+
+[data-theme="paper"] body,
+[data-theme="paper"] .nr-reading-text,
+[data-theme="paper"] .nr-reading-text p {
+  font-family: "Georgia", "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif !important;
+}
