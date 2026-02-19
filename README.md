@@ -15,6 +15,7 @@ A self-hosted RSS reader with a clean, Apple-inspired UI and dark/light themes. 
 - **Keyboard navigation** — `j`/`k` to move, `o` to open, `s` to save, `?` for all shortcuts
 - **Reading controls** — Adjustable font size and reading width
 - **Estimated reading time** — See how long each article takes to read
+- **SUMMARY (Not AI)** — Generate a summary of any article with one click (uses extractive algorithm, not AI)
 - **Topic organization** — Group feeds by topic with collapsible sections
 - **Auto-refresh** — Configurable refresh interval (5, 10, 15, or 30 minutes)
 - **Import/Export** — Back up and restore your feed list as JSON
