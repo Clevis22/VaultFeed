@@ -186,6 +186,49 @@ def fetch_article():
     })
 
 
+@app.route("/api/summarize", methods=["POST"])
+def summarize_article():
+    """Generate a short extractive summary of the provided article text.
+
+    Uses sumy's LexRank algorithm to pick the most important sentences.
+    Very lightweight — no ML model needed, works fine on 1 GB VPS.
+
+    Expects JSON body: { "text": "<article text>", "sentences": 4 }
+    Returns JSON:      { "summary": "..." }
+    """
+    from sumy.parsers.plaintext import PlaintextParser
+    from sumy.nlp.tokenizers import Tokenizer
+    from sumy.summarizers.lex_rank import LexRankSummarizer
+    from sumy.nlp.stemmers import Stemmer
+    from sumy.utils import get_stop_words
+
+    data = request.get_json(silent=True) or {}
+    text = (data.get("text") or "").strip()
+    num_sentences = min(int(data.get("sentences", 4)), 8)
+
+    if not text:
+        return jsonify({"error": "text field is required"}), 400
+
+    if len(text) < 80:
+        return jsonify({"error": "Article text is too short to summarize"}), 400
+
+    try:
+        parser = PlaintextParser.from_string(text, Tokenizer("english"))
+        stemmer = Stemmer("english")
+        summarizer = LexRankSummarizer(stemmer)
+        summarizer.stop_words = get_stop_words("english")
+
+        summary_sentences = summarizer(parser.document, num_sentences)
+        summary = " ".join(str(s) for s in summary_sentences)
+
+        if not summary:
+            return jsonify({"error": "Could not extract a summary"}), 400
+
+        return jsonify({"summary": summary})
+    except Exception as e:  # noqa: BLE001
+        return jsonify({"error": f"Summarization failed: {e}"}), 500
+
+
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory(

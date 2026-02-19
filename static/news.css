@@ -734,6 +734,45 @@
   background: rgba(10, 132, 255, 0.24);
 }
 
+/* ── AI Summary box ── */
+.nr-summary-box {
+  margin: 12px 0 20px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--accent-soft, rgba(10, 132, 255, 0.08));
+  border-left: 3px solid var(--accent, #0a84ff);
+}
+
+.nr-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent, #0a84ff);
+  margin-bottom: 8px;
+}
+
+.nr-summary-body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.nr-summary-loading .nr-summary-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.nr-summarize-btn {
+  color: var(--accent, #0a84ff) !important;
+}
+
 /* Bookmark active */
 .nr-bookmark-active svg {
   fill: var(--accent);

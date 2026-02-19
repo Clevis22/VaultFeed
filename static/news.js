@@ -794,6 +794,92 @@
     }
   }
 
+  // ── AI Summarization ──
+  async function requestSummary() {
+    if (!selectedArticle) return;
+
+    const bodyEl = $("nrReadingBody");
+    if (!bodyEl) return;
+
+    // Grab the article text from the reading pane
+    const textEl = bodyEl.querySelector(".nr-reading-text");
+    const articleText = textEl ? textEl.innerText.trim() : "";
+
+    if (!articleText || articleText.length < 80) {
+      showSummaryBox(bodyEl, "Not enough article content to summarize.");
+      return;
+    }
+
+    // Remove any existing summary box
+    const existing = bodyEl.querySelector(".nr-summary-box");
+    if (existing) existing.remove();
+
+    // Show loading state
+    const box = document.createElement("div");
+    box.className = "nr-summary-box nr-summary-loading";
+    box.innerHTML =
+      '<div class="nr-summary-header">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>' +
+        ' AI Summary' +
+      '</div>' +
+      '<div class="nr-summary-body">' +
+        '<div class="nr-loading-spinner"></div> Generating summary…' +
+      '</div>';
+
+    // Insert at the top of the reading body, after any hero image / author
+    const readingText = bodyEl.querySelector(".nr-reading-text");
+    if (readingText) {
+      bodyEl.insertBefore(box, readingText);
+    } else {
+      bodyEl.prepend(box);
+    }
+
+    try {
+      const res = await fetch("/api/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: articleText }),
+      });
+      const data = await res.json();
+
+      if (!selectedArticle) return; // user navigated away
+
+      if (data.error) {
+        box.classList.remove("nr-summary-loading");
+        box.querySelector(".nr-summary-body").textContent = "Could not generate summary: " + data.error;
+        return;
+      }
+
+      box.classList.remove("nr-summary-loading");
+      box.querySelector(".nr-summary-body").textContent = data.summary;
+    } catch (e) {
+      console.error("Summarize error:", e);
+      box.classList.remove("nr-summary-loading");
+      box.querySelector(".nr-summary-body").textContent = "Failed to connect to summarization service.";
+    }
+  }
+
+  function showSummaryBox(bodyEl, message) {
+    const existing = bodyEl.querySelector(".nr-summary-box");
+    if (existing) existing.remove();
+
+    const box = document.createElement("div");
+    box.className = "nr-summary-box";
+    box.innerHTML =
+      '<div class="nr-summary-header">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>' +
+        ' AI Summary' +
+      '</div>' +
+      '<div class="nr-summary-body">' + escapeHtml(message) + '</div>';
+
+    const readingText = bodyEl.querySelector(".nr-reading-text");
+    if (readingText) {
+      bodyEl.insertBefore(box, readingText);
+    } else {
+      bodyEl.prepend(box);
+    }
+  }
+
   function showReadingEmpty() {
     const empty = $("nrReadingEmpty");
     const content = $("nrReadingContent");
@@ -1286,6 +1372,15 @@
     document.querySelectorAll('.nr-feed-btn[data-feed="all"], .nr-feed-btn[data-feed="saved"]').forEach((btn) => {
       btn.addEventListener("click", () => setActiveFeed(btn.dataset.feed));
     });
+
+    // Summarize button
+    const summarizeBtn = $("nrSummarizeBtn");
+    if (summarizeBtn) {
+      summarizeBtn.addEventListener("click", () => {
+        if (!selectedArticle) return;
+        requestSummary();
+      });
+    }
 
     // Keyboard navigation
     document.addEventListener("keydown", (e) => {
